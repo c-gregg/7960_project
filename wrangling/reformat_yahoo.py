@@ -11,18 +11,14 @@ def process_csv(file_path):
     df = df.dropna(subset=[df.columns[1]])
 
     result_df = pd.DataFrame()
-    # Iterate over each row and create new rows for every 10 columns
-    # for i in range(1, len(df) - 9):
-    #     row_data = df.iloc[i:i+10].values.flatten().tolist()
-    #     reshaped_data = np.array(row_data).reshape(1, -1)  # Reshape to 1 row
-    #     # result_df = pd.concat([result_df, pd.DataFrame(row_data)], ignore_index=True)
-    #     result_df = pd.concat([result_df, pd.DataFrame(reshaped_data, columns=result_df.columns)], ignore_index=True)
     for _, row in df.iterrows():
         rlist = row.values.flatten().tolist()[2:]
         for i in range(len(rlist) - 9):
             result_df = pd.concat([result_df, pd.DataFrame(rlist[i: i + 10]).T], ignore_index=True)
 
     return result_df.dropna()
+
+
 def main(source_dir_path):
 
     final_df = pd.DataFrame()
@@ -34,9 +30,9 @@ def main(source_dir_path):
 
         if not result_df.empty:
             final_df = pd.concat([final_df, result_df], ignore_index=True)
-        print(i)
 
-    final_df.to_csv(f'../data/combined_data_{today}.csv', index=False)
+    final_df.to_csv(os.path.join(os.getcwd(), f'data/combined_data_{today}.csv'), index=False)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
