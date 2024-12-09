@@ -1,0 +1,452 @@
+<html>
+<head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<link rel="shortcut icon" href="images/icon.ico">
+<style type="text/css">
+	body {
+		background-color: #f5f9ff;
+	}
+
+	/* Hide both math displays initially, will display based on JS detection */
+  .mathjax-mobile, .mathml-non-mobile { display: none; }
+
+  /* Show the MathML content by default on non-mobile devices */
+  .show-mathml .mathml-non-mobile { display: block; }
+  .show-mathjax .mathjax-mobile { display: block; }
+
+	.content-margin-container {
+		display: flex;
+		width: 100%; /* Ensure the container is full width */
+		justify-content: left; /* Horizontally centers the children in the container */
+		align-items: center;  /* Vertically centers the children in the container */
+	}
+	.main-content-block {
+		width: 70%; /* Change this percentage as needed */
+    max-width: 1100px; /* Optional: Maximum width */
+		background-color: #fff;
+		border-left: 1px solid #DDD;
+		border-right: 1px solid #DDD;
+		padding: 8px 8px 8px 8px;
+		font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;#"Avenir";
+	}
+	.margin-left-block {
+			font-size: 14px;
+			width: 15%; /* Change this percentage as needed */
+			max-width: 130px; /* Optional: Maximum width */
+			position: relative;
+			margin-left: 10px;
+			text-align: left;
+			font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;#"Avenir";
+			padding: 5px;
+	}
+	.margin-right-block {
+			font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;#"Avenir";
+			font-size: 14px;
+			width: 25%; /* Change this percentage as needed */
+			max-width: 256px; /* Optional: Maximum width */
+			position: relative;
+			text-align: left;
+			padding: 10px;  /* Optional: Adds padding inside the caption */
+	}
+
+	img {
+			max-width: 100%; /* Make sure it fits inside the container */
+			height: auto;
+			display: block;
+			margin: auto;
+	}
+	.my-video {
+			max-width: 100%; /* Make sure it fits inside the container */
+			height: auto;
+			display: block;
+			margin: auto;
+	}
+	/* Hide both video displays initially, will display based on JS detection */
+  .vid-mobile, .vid-non-mobile { display: none; }
+
+  /* Show the video content by default on non-mobile devices */
+  .show-vid-mobile .vid-mobile { display: block; }
+  .show-vid-non-mobile .vid-non-mobile { display: block; }
+
+	a:link,a:visited
+	{
+		color: #0e7862; /*#1367a7;*/
+		text-decoration: none;
+	}
+	a:hover {
+		color: #24b597; /*#208799;*/
+	}
+
+	h1 {
+		font-size: 18px;
+		margin-top: 4px;
+		margin-bottom: 10px;
+	}
+
+	table.header {
+    font-weight: 300;
+    font-size: 17px;
+    flex-grow: 1;
+		width: 70%;
+    max-width: calc(100% - 290px); /* Adjust according to the width of .paper-code-tab */
+	}
+	table td, table td * {
+	    vertical-align: middle;
+	    position: relative;
+	}
+	table.paper-code-tab {
+	    flex-shrink: 0;
+	    margin-left: 8px;
+	    margin-top: 8px;
+	    padding: 0px 0px 0px 8px;
+	    width: 290px;
+	    height: 150px;
+	}
+
+	.layered-paper { /* modified from: http://css-tricks.com/snippets/css/layered-paper/ */
+		box-shadow:
+		        0px 0px 1px 1px rgba(0,0,0,0.35), /* The top layer shadow */
+		        5px 5px 0 0px #fff, /* The second layer */
+		        5px 5px 1px 1px rgba(0,0,0,0.35), /* The second layer shadow */
+		        10px 10px 0 0px #fff, /* The third layer */
+		        10px 10px 1px 1px rgba(0,0,0,0.35); /* The third layer shadow */
+		margin-top: 5px;
+		margin-left: 10px;
+		margin-right: 30px;
+		margin-bottom: 5px;
+	}
+
+	hr {
+    height: 1px; /* Sets the height of the line to 1 pixel */
+    border: none; /* Removes the default border */
+    background-color: #DDD; /* Sets the line color to black */
+  }
+
+	div.hypothesis {
+		width: 80%;
+		background-color: #EEE;
+		border: 1px solid black;
+		border-radius: 10px;
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		font-family: Courier;
+		font-size: 18px;
+		text-align: center;
+		margin: auto;
+		padding: 16px 16px 16px 16px;
+	}
+
+	div.citation {
+    font-size: 0.8em;
+    background-color:#fff;
+    padding: 10px;
+		height: 200px;
+  }
+
+	.fade-in-inline {
+		position: absolute;
+		text-align: center;
+		margin: auto;
+		-webkit-mask-image: linear-gradient(to right,
+																			transparent 0%,
+																			transparent 40%,
+																			black 50%,
+																			black 90%,
+																			transparent 100%);
+		mask-image: linear-gradient(to right,
+																transparent 0%,
+																transparent 40%,
+																black 50%,
+																black 90%,
+																transparent 100%);
+		-webkit-mask-size: 8000% 100%;
+		mask-size: 8000% 100%;
+		animation-name: sweepMask;
+		animation-duration: 4s;
+		animation-iteration-count: infinite;
+		animation-timing-function: linear;
+		animation-delay: -1s;
+	}
+
+	.fade-in2-inline {
+			animation-delay: 1s;
+	}
+
+	.inline-div {
+			position: relative;
+	    display: inline-block; /* Makes both the div and paragraph inline-block elements */
+	    vertical-align: top; /* Aligns them at the top, you can adjust this to middle, bottom, etc., based on your needs */
+	    width: 50px; /* Optional: Adds space between the div and the paragraph */
+	}
+
+</style>
+
+	  <title>Image Based Time Series</title>
+      <meta property="og:title" content="Image Based Time Series" />
+			<meta charset="UTF-8">
+  </head>
+
+  <body>
+
+		<div class="content-margin-container">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+						<table class="header" align=left>
+								<tr>
+									<td colspan=4>
+										<span style="font-size: 32px; font-family: 'Courier New', Courier, monospace; /* Adds fallbacks */">Is A Picture Worth a Thousand Words? An Image-Based Approach to Time Series Analysis
+</span>
+									</td>
+								</tr>
+								<tr>
+										<td align=left>
+												<span style="font-size:17px">James Simon</span>
+										</td>
+										<td align=left>
+												<span style="font-size:17px">Cecil Gregg</span>
+										</td>
+								<tr>
+									<td colspan=4 align=left><span style="font-size:18px">Final project for 6.7960, MIT</span></td>
+								</tr>
+						</table>
+					</div>
+					<div class="margin-right-block">
+					</div>
+		</div>
+
+		<div class="content-margin-container" id="intro">
+				<div class="margin-left-block">
+          <!-- table of contents here -->
+          <div style="position:fixed; max-width:inherit; top:max(20%,120px)">
+              <b style="font-size:16px">Outline</b><br><br>
+              <a href="#introduction">Introduction</a><br><br>
+              <a href="#literature_review">Literature Review</a><br><br>
+              <a href="#methods_and_experiments">Methods and Experiments</a><br><br>
+			  <a href="#results_and_analysis">Results and Analysis</a><br><br>
+			  <a href="#conculsions">Conclusions, Discussions and Limitations</a><br><br>
+              <a href="#future_work">Future Work</a><br><br>
+			  <a href="#references">References</a><br><br>
+          </div>
+				</div>
+		</div>
+
+    <div class="content-margin-container" id="introduction">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+						<h1>Introduction</h1>
+            <p>Time series analysis is a branch of statistics that makes a significant impact on the world around us. Uses include weather forecasting, sales forecasting for companies, analyzing economic trends, monitoring patient vital signs in healthcare, energy consumption patterns, tracking website traffic, and any other situation where data is collected over time and patterns or trends need to be identified to predict future outcomes.</p>
+
+			<p>Understandably, time series analysis has been the focus of many mathematicians, economists, academics, and industry professionals since the field was first developed in the 1920s. In the past century such analysis has approached time series analysis from a data perspective. This entails using the values of the time series to solve a mathematical model that generally seeks to minimize a loss term that compares predicted values from the model with the true values in the series.</p>
+
+			<div class="main-content-block">
+            <!--You can embed an image like this:-->
+            <img src="./images/fig1_mse.png" width=512px/>
+		    </div>
+			<div class="margin-right-block">
+						 Figure 1: Linear Regression Squared Loss
+						https://diposit.ub.edu/dspace/bitstream/2445/189584/2/tfg_casta%C3%B1o_camps_eloi.pdf
+		    </div>
+
+			<p>Data-based models have made great progress and enable powerful prediction abilities. These techniques do have clear limitations however. In particular, autoregressive time series analysis, where only the past data points of a series are used to predict future values of that series, struggles when there is a lot of noise in the data, seasonality without defined periodicity, and non-linear patterns.</p>
+			<p>Basic time series models such as ordinary least squares regression have given way to more advanced models that include Autoregressive Integrated Moving Average (ARIMA) models, nonlinear regression models like Meta’s Prophet, and Long Short-Term Memory (LSTM) network deep learning approaches. These models have continually improved in their forecasting abilities, but still encounter challenges with autoregression in many circumstances.</p>
+			<p>We approach these problems from a variety of angles:</p>
+			<ol>
+				<li>
+					How does a CNN perform differently than benchmark models in situations where those benchmark models struggle?
+					<ol type="a">
+						<li>For these models we compare to a mean baseline, OLS regression, ARIMA, LSTM, and Prophet models.</li>
+						<li>We used a large database where those models struggle: intraday stock market prices.</li>
+					</ol>
+				</li>
+				<li>
+					Can a CNN perform well in situations that we know that current models do well?
+					<ol type="a">
+						<li>We compare CNN performance to baseline models for an additional simulated dataset that we engineered for high performance of those baseline models.</li>
+					</ol>
+				</li>
+				<li>
+					In both the stock market and simulated datasets how does CNN performance change with the type of graph used as an input?
+				</li>
+				<li>
+					Whether performance is better, worth, or comparable to the baseline models, what does the CNN 'look at' as visualized by attribution maps at various layers of the network?
+					<ol type="a">
+						<li>Can this inform approaches to improve CNN predictive performance?</li>
+						<li>How does this compare to what a human would look at?</li>
+						<li>Does this change depending on the type of graph used?</li>
+					</ol>
+				</li>
+			</ol>
+			</div>
+
+		</div>
+
+		<div class="content-margin-container" id="literature_review">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+					<h1>Literature Review</h1>
+				  <p>Time series forecasting, a cornerstone of statistical analysis, involves predicting future values based on historical data. This technique finds applications across diverse fields, from finance and economics to meteorology and engineering (Watson, 2001; Wu et al., 2023). The growing demand for accurate forecasting has led to a surge in benchmarking predictive models (Wang et al., 2024).</p>
+				<p>While traditional methods like linear regression, exponential smoothing, and ARIMA remain relevant (Ho & Xie, 1998), they often struggle to capture the complexity of real-world time series data, particularly those with non-linear patterns and multiple dependencies. Machine learning, particularly deep learning, offers a promising alternative, as evidenced by the success of cross-learning techniques in the M4 competition (Semenoglou et al., 2021; Makridakis et al., 2020). These techniques can learn intricate patterns and adapt to changing dynamics, leading to more accurate and robust forecasts.</p>
+				<p>In parallel with advancements in time series forecasting, deep learning architectures have revolutionized image recognition and pattern analysis. Convolutional Neural Networks (CNNs), such as ResNet (He et al., 2016), have enabled high-level image classification and contextual understanding. This success has naturally extended to time series forecasting.</p>
+				<p>Researchers have explored the application of CNNs to time series data. LSTNet (Lai et al., 2018) combines CNNs and Recurrent Neural Networks (RNNs) to effectively identify temporal trends in raw time series data. This approach leverages the strengths of both architectures, capturing both local and global patterns in the data. Moreover, image-based forecasting approaches have gained traction. Sood et al. (2021) used image classification techniques to forecast stock market activity, treating time series data as images and training a CNN to recognize patterns. This innovative approach demonstrates the potential of image-based techniques for time series analysis.</p>
+				<p>The success of image-based forecasting, as exemplified by ForCNN (Semenoglou et al., 2022) in the M4 competition, highlights the power of deep learning in capturing complex patterns and making accurate predictions. This find has served as the motivation for this paper. By transforming time series data into images, we can leverage the powerful image processing capabilities of CNNs to extract meaningful features and improve forecasting accuracy.</p>
+			</div>
+		</div>
+		<div class="content-margin-container" id="methods_and_experiments">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+					<h1>Methods and Experiments</h1>
+				  <strong>Part 1) CNN for Intraday Stock Data </strong>
+				<p>The first set of experiments that we ran were on a dataset of intraday stock returns from the past year of stocks in the S&P 500, which consists of the 500 biggest US companies. We were not focused on doing a finance related project, but this was a source of readily available data that fit our criteria of interest. While there may be some underlying pattern of past prices being related to future prices, as markets are not perfectly efficient, current time series analysis struggles to identify such relationships.</p>
+				<p>We gathered a dataset of 341,481 unique time series of length 11. The task we define is to predict if the 11th data point is greater or less than the 10th data point. We chose a number of baseline models to cover the wide range of current popular time series analysis techniques. Their performance was equivalent to random chance in this task, with full accuracies defined in the table below:</p>
+				<table>
+				  <thead>
+					<tr>
+					  <th>Model</th>
+					  <th>Accuracy</th>
+					</tr>
+				  </thead>
+				  <tbody>
+					<tr>
+					  <td>Mean</td>
+					  <td>0.5029</td>
+					</tr>
+					<tr>
+					  <td>OLS</td>
+					  <td>0.4963</td>
+					</tr>
+					<tr>
+					  <td>ARIMA</td>
+					  <td>0.4981</td>
+					</tr>
+					<tr>
+					  <td>Prophet</td>
+					  <td>0.4985</td>
+					</tr>
+					<tr>
+					  <td>LSTM</td>
+					  <td>0.4897</td>
+					</tr>
+				  </tbody>
+				</table>
+				<div class="margin-right-block">
+						 Figure 2: Baseline Model Performance
+		    	</div>
+				<p>We then converted the time series into a dataset of graphs with accompanying labels. We explored multiple styles of graphs with varying information as shown below, to explore how the sparseness of an input image impacted the model.</p>
+					<img src="./images/fig3.png" alt="Image 1 description" width=512px />
+				<div class="margin-content-block">
+						Figure 3: Graph & Label Pairs for the Same Example Time Series
+		    	</div><br>
+
+				<strong> Part 3) Visualizing the Network </strong>
+				<p>While we wanted to set a lofty goal for our project we also wanted to be pragmatic and understand that the development of machine learning time series prediction models is a long standing challenge. Therefore, we put a lot of effort and emphasis on understanding what a CNN does with the tasks we designed, rather than focusing solely on developing a model that would have performance better than baseline models. This provided interesting insights in and of itself.</p>
+				<p>The first direction we approached this from are saliency maps. Through these images we can see what areas of an image most influence the model’s design.This is done through computing the gradients of the output class with respect to the input image. An interesting observation of the salience maps is that when axis labels are included the model does factor those into its decision, but also gets distracted from the trend itself.</p>
+				<img src="./images/fig6saliency.png" width=512px />
+				<div class="margin-content-block">
+						Figure 6: Saliency Maps for Input Graphs with Differing Information
+		    	</div> <br>
+				<p>Activation maximization was a second angle that we approached network visualization from. This approach optimizes an input image to maximize the activations of a specific neuron or filter in a given layer. We explored layers throughout the entire network, and our prior was that layers deeper into the network would display a focus on certain linear segments. Interestingly, we found that even the deepest layers of the network did not have activation maximization images with intuitive explanations. We believe this could be due to the fact that an ‘up’ or ‘down’ graph is not a uniformly defined type of image. Through the course we saw activation maximization images for classification tasks of animals that clearly showed the model looked at certain features that were similar to what a human looks for to understand what they are seeing. This classification task does not have a clearly defined structural thing that a human would recognize.</p>
+
+				<img src="./images/fig7activation.png" width=400px />
+				<div class="margin-content-block">
+						Figure 7: Activation Maximization of CNN Final Classifier Layer
+		    	</div>
+			</div>
+		</div>
+
+		<div class="content-margin-container" id="results_and_analysis">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+						<h1>Results and Analysis</h1>
+				<p>As expected for the simulated data following monotonic rules, our CNN requires relatively little training to obtain accurate forecasting ability. This is unsurprising for the reasons mentioned previously, and it supports the belief that image-based time series data would be able to perform at a comparable level to canonical time-series forecasting methods such as linear regressions or ARIMA that leverage the underlying data. However, this is a severely limited use case as the CNN effectively needs to simply detect a single up/down-ward sloping segment of the plot to infer the forecasted value. This would not generalize well to real-world intraday stock data that demonstrates seemingly unpredictable movements, as we turn to next.</p>
+		    	<img src="./images/fig8simulation.png" width=512px />
+				<div class="margin-content-block">
+						Figure 8: Learning Plot for Simulation Data
+		    	</div>
+				<p>Our first iteration of a simple CNN for the stock dataset showed clear overfitting. With our graph of 10 epochs below the CNN was able to memorize the training data, but did not generalize at all, as validation accuracy was 50%, while training accuracy was 100%.</p>
+
+				<img src="./images/fig9initialcnn.png" width=512px />
+				<div class="margin-content-block">
+						Figure 9: Initial CNN Learning Plot for Intraday Stock Data
+		    	</div>
+				<p>To deal with this problem of overfitting we tried multiple techniques. First was using L2 regularization to penalize large weights. We tuned the weight decay parameter and ended up in a situation where the model would either not be able to learn, or revert back to overfitting.</p>
+
+				<img src="./images/fig10wdecay.png" width=512px />
+				<div class="margin-content-block">
+						Figure 10: CNN Learning Plot with Weight Decay Parameter of 1e-4
+		    	</div>
+				<p>After many iterations of our own model we also explored transfer learning. For this we used Resnet: a widely used pre-trained CNN model. While Resnet did not overfit as quickly, the model failed to generalize.</p>
+
+				<img src="./images/fig11resnet.png" width=512px />
+				<div class="margin-content-block">
+						Figure 11: Resnet Learning Plot
+		    	</div>
+
+			</div>
+		    <div class="margin-right-block">
+		    </div>
+		</div>
+
+		<div class="content-margin-container" id="conculsions">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+						<h1>Conclusions, Discussions and Limitations</h1>
+			<p>At the outset of this project we sought to explore several areas of study:</p>
+			<ol>
+				<li>What are the properties of a CNN as a time series analysis tool?</li>
+				<li>How can previous work be built on for the unexplored field in the literature of image-based CNN predictions of high frequency data where conventional models struggle?</li>
+				<li>How can we understand what a CNN 'looks at' when it makes decisions in a time series analysis setting?</li>
+			</ol>
+			<p>As discussed in the above sections, we found that a CNN has many interesting abilities as a time series analysis tool. Our model matched baseline model performance in a simulated dataset, dedicated focus to axis labels when given such information for a high frequency data prediction task, and 'viewed' things very differently than a human would even in its deepest layers.</p>
+			<p>The limitations of our work are also very clear, our CNN models did not unlock a new key to finding trends in high frequency data, and struggled to effectively generalize in that environment. Classification models can have difficulty when there are not well-defined classes with clear unique traits, and that was apparent through our set of experiments.</p>
+
+		    </div>
+		    <div class="margin-right-block">
+		    </div>
+		</div>
+
+		<div class="content-margin-container" id="future_works">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+						<h1>Future Works</h1>
+				<p>A natural progression for this project would involve exploring new domains for time series data to apply these models. While stock market prediction is notoriously challenging due to the rapid incorporation of new information into stock prices (principle that values have actionable insights “priced-in” immediately), other areas like weather, sales and marketing trends, and traffic patterns offer promising opportunities. We believe that, unlike the stock market, these domains often allow for a lag between insights and their impact on future outcomes, creating potential for significant forecasting improvements using deep learning (DL) models.</p>
+				<p>Furthermore, investigating alternative architectures and combining insights from various models could yield substantial advancements in this field. One particularly ambitious direction would be to develop methods for uncertainty quantification. By training models to output probability distributions for future values, we could provide not only point forecasts but also estimates of uncertainty. This approach, rooted in Bayesian deep learning, would allow us to incorporate prior knowledge and uncertainty into the model, potentially unlocking value even within the complex realm of stock market data.</p>
+				<p>Additionally, there's immense potential in integrating diverse data sources into the neural network architecture. This could include textual embeddings, predictions from other models, and external data. By leveraging this rich data ecosystem, we can expand the scope of deep learning applications in image-based time series forecasting.</p>
+		    </div>
+		    <div class="margin-right-block">
+		    </div>
+		</div><br>
+
+		<div class="content-margin-container" id="citations">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+						<div class='citation' id="references" style="height:auto"><br>
+							<span style="font-size:16px">References:</span><br><br>
+							<a id="ref_1">[1]</a>  Ho, S. L., & Xie, M. (1998). The use of ARIMA models for reliability forecasting and analysis. Computers & Industrial Engineering, 35(1-2), 213-216. https://doi.org/10.1016/S0360-8352(98)00066-7<br><br>
+							<a id="ref_2">[2]</a>  Lai, G., Chang, W.-C., Yang, Y., & Liu, H. (2018). Modeling long- and short-term temporal patterns with deep neural networks. In Proceedings of the 2018 ACM International Conference on Management of Data (SIGMOD '18) (pp. 1303-1316). Association for Computing Machinery. https://doi.org/10.1145/3209978.3210006<br><br>
+							<a id="ref_3">[3]</a>  Makridakis, S., Spiliotis, E., & Assimakopoulos, V. (2020). The M4 Competition: 100,000 time series and 61 forecasting methods. International Journal of Forecasting, 36 , 54–74. http://dx.doi.org/https://doi.org/10.1016/j.ijforecast.2019.04.014.<br><br>
+							<a id="ref_4">[4]</a>  He, K., Zhang, X., Ren, S., & Sun, J. (2016, June). Deep residual learning for image recognition. In Proceedings of the IEEE conference on computer vision and pattern recognition (pp. 770-778). [link](https://doi.org/10.1109/CVPR.2016.90)<br><br>
+							<a id="ref_5">[5]</a>  Rawat, Waseem, & Wang, Zenghui. (2017). Deep convolutional neural networks for image classification: A comprehensive review. Neural Computation, 29(9), 2352-2449. https://doi.org/10.1162/neco_a_00990<br><br>
+							<a id="ref_6">[6]</a>  Semenoglou, A.-A., Spiliotis, E., Makridakis, S., & Assimakopoulos, V. (2021). Investigating the accuracy of cross-learning time series forecasting methods. International Journal of Forecasting, 37(3), 1072-1084. https://doi.org/10.1016/j.ijforecast.2020.11.009<br><br>
+							<a id="ref_7">[7]</a>  Semenoglou, Artemios-Anargyros, Spiliotis, Evangelos, & Assimakopoulos, Vassilis. (2022). Image-based time series forecasting: A deep convolutional neural network approach. Neural Networks, 157. 10.1016/j.neunet.2022.10.006.<br><br>
+							<a id="ref_8">[8]</a>  Sood, S., Zeng, Z., Cohen, N., Balch, T., & Veloso, M. (2021, November). Visual time series forecasting: an image-driven approach. In Proceedings of the Second ACM International Conference on AI in Finance (pp. 1-9).<br><br>
+							<a id="ref_9">[9]</a>  Wang, Yuxuan, Wu, Haixu, Dong, Jiaxiang, Liu, Yong, Long, Mingsheng, & Wang, Jianmin. (2024). Deep Time Series Models: A Comprehensive Survey and Benchmark.
+						</div>
+		    </div>
+		    <div class="margin-right-block">
+            <!-- margin notes for reference block here -->
+		    </div>
+		</div>
+
+	</body>
+
+</html>
